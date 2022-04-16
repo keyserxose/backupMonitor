@@ -13,54 +13,33 @@ path = __location__ = os.path.realpath(
 
 #os.environ['BORG_REPO'] = 'Here goes the env variable'
 
-#a = os.system('borg list --last 1 --json > output.json')
+def backupStatus():
+    jsonBackup = open('/home/xose/Scripts/backups/output.json')
+    data = json.load(jsonBackup)
+    format = "%Y-%m-%dT%H:%M:%S.%f"
+    last_modified = data['repository']['last_modified']
+    backupDate = datetime.strptime(last_modified, format)
+    today = date.today()
+    dateBackup = backupDate.date()
+    global backup
+    if today != dateBackup:
+        print('This is the current date: '+str(date))
+        print('This is the date of the last backup: '+str(dateBackup))
+        print('Dates do not match, backup has not run!')
+        backup = 'N'
 
-# This reads the output.json and compares the date
-#f = open(path+'/output.json')
-
-apachedir = '/srv/http/'
-
-f = open('/home/xose/Scripts/backups/output.json')
- 
-data = json.load(f)
-
-format = "%Y-%m-%dT%H:%M:%S.%f"
-
-last_modified = data['repository']['last_modified']
-
-backup = datetime.strptime(last_modified, format)
-
-date = date.today()
-
-dateBackup = backup.date()
-
-if date != dateBackup:
-    print('This is the current date: '+str(date))
-    print('This is the date of the last backup: '+str(dateBackup))
-    print('Dates do not match, backup has not run!')
-    output = {
-    "Backup" : "N"
-}
-
-elif date == dateBackup:
-    print('This is the current date: '+str(date))
-    print('This is the date of the last backup: '+str(dateBackup))
-    print('Backup has been completed!')
-    output = {
-    "Backup" : "Y"
-}
-
-# This generates a json file
-
-with open(apachedir+'data.json', 'w') as outfile:
-    json.dump(output, outfile, indent=4)
+    elif today == dateBackup:
+        print('This is the current date: '+str(date))
+        print('This is the date of the last backup: '+str(dateBackup))
+        print('Backup has been completed!')
+        backup = 'Y'
 
 # This consumes the json file from a url and prints the output
 
-url = 'http://localhost:8080/data.json'
-
-new_request = requests.get(url)
-json_data = new_request.json()
+#url = 'http://localhost:8080/data.json'
+#
+#new_request = requests.get(url)
+#json_data = new_request.json()
 
 #print(json_data['Backup'])
 
@@ -75,8 +54,52 @@ for disk in disks:
     jsonData = json.load(report)
     jsonOutput = jsonData['ata_smart_data']['self_test']['status']['string']
     #print(jsonOutput)
-    if jsonOutput == 'completed without error':
-        print('No Errors')
+    if jsonOutput == 'completed without error' and disk == 'sda':
+        disk1 = disk
+        status1 = 'Good'
+    elif jsonOutput == 'completed without error' and disk == 'sdb':
+        disk2 = disk
+        status2 = 'Good'
+    elif jsonOutput == 'completed without error' and disk == 'sdc':
+        disk3 = disk
+        status3 = 'Good'
+    elif jsonOutput == 'completed without error' and disk == 'sdd':
+        disk4 = disk
+        status4 = 'Good'
+    elif jsonOutput == 'completed without error' and disk == 'sde':
+        disk5 = disk
+        status5 = 'Good'
+    elif jsonOutput != 'completed without error' and disk == 'sda':
+        disk1 = disk
+        status1 = 'Issue'
+    elif jsonOutput != 'completed without error' and disk == 'sdb':
+        disk2 = disk
+        status2 = 'Issue'
+    elif jsonOutput != 'completed without error' and disk == 'sdc':
+        disk3 = disk
+        status3 = 'Issue'
+    elif jsonOutput != 'completed without error' and disk == 'sdd':
+        disk4 = disk
+        status4 = 'Issue'
+    elif jsonOutput != 'completed without error' and disk == 'sde':
+        disk5 = disk
+        status5 = 'Issue'
     else:
-        print('Disk has issue!')
+        print('There is an issue!')
         pass
+
+
+
+def generateJSON():
+    apachedir = '/srv/http/'
+    output = [{'Backup': backup}, 
+    {'Disk1':{'Device': disk1, 'Status': status1}, 'Disk2':{'Device': disk2, 'Status': status2}, 'Disk3':{'Device': disk3, 'Status': status3}, 'Disk4':{'Device': disk4, 'Status': status4}, 'Disk5':{'Device': disk5, 'Status': status5}},
+    ]
+    with open(apachedir+'data.json', 'w') as outfile:
+        json.dump(output, outfile, indent=4)
+
+
+backupStatus()
+
+generateJSON()
+
