@@ -23,13 +23,13 @@ def backupStatus():
     dateBackup = backupDate.date()
     global backup
     if today != dateBackup:
-        print('This is the current date: '+str(date))
+        print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Dates do not match, backup has not run!')
         backup = 'N'
 
     elif today == dateBackup:
-        print('This is the current date: '+str(date))
+        print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Backup has been completed!')
         backup = 'Y'
@@ -53,7 +53,6 @@ for disk in disks:
     report = open('/home/xose/sysReports/smartdata.json')
     jsonData = json.load(report)
     jsonOutput = jsonData['ata_smart_data']['self_test']['status']['string']
-    #print(jsonOutput)
     if jsonOutput == 'completed without error' and disk == 'sda':
         disk1 = disk
         status1 = 'Good'
