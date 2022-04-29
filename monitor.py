@@ -107,8 +107,12 @@ def checkDisks():
 
 def generateJSON():
     apachedir = '/srv/http/'
-    output = [{'Backup': backup, 'Backups Date': str(dateBackup)}, 
-    {'Disk1':{'Device': disk1, 'Status': status1}, 'Disk2':{'Device': disk2, 'Status': status2}, 'Disk3':{'Device': disk3, 'Status': status3}, 'Disk4':{'Device': disk4, 'Status': status4}, 'Disk5':{'Device': disk5, 'Status': status5}},
+    output = [{'backup': backup, 'backups date': str(dateBackup)}, 
+    {'disk1':{'device': disk1, 'status': status1}, 
+    'disk2':{'device': disk2, 'status': status2},
+    'disk3':{'device': disk3, 'status': status3},
+    'disk4':{'device': disk4, 'status': status4},
+    'disk5':{'device': disk5, 'status': status5}},
     ]
     with open(apachedir+'data.json', 'w') as outfile:
         json.dump(output, outfile, indent=4)
