@@ -54,7 +54,11 @@ def checkDisks():
         os.system('smartctl --all /dev/'+disk+' -j > /home/xose/sysReports/smartdata.json')
         report = open('/home/xose/sysReports/smartdata.json')
         jsonData = json.load(report)
-        jsonOutput = jsonData['ata_smart_data']['self_test']['status']['string']
+        try:
+            jsonOutput = jsonData['ata_smart_data']['self_test']['status']['string']
+        except KeyError:
+            pass
+            
         global disk1
         global status1
         global disk2
