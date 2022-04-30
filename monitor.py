@@ -13,49 +13,56 @@ path = __location__ = os.path.realpath(
 
 #os.environ['BORG_REPO'] = 'Here goes the env variable'
 
-def backupRsync():
-    jsonBackup = open('/home/xose/Scripts/backup/output.json')
+
+
+def backupRsync(dest):
+    global destination0
+    global destination1
+    global jsonBackup
+    if dest == 'rsync':
+        jsonBackup = open('/home/xose/Scripts/backup/output'+dest+'.json')
+        destination0 = dest
+    elif dest == 'local':
+        jsonBackup = open('/home/xose/Scripts/backup/output'+dest+'.json')
+        destination1 = dest
+    else:
+        pass
     data = json.load(jsonBackup)
+    #print(data)
     format = "%Y-%m-%dT%H:%M:%S.%f"
     last_modified = data['repository']['last_modified']
     backupDate = datetime.strptime(last_modified, format)
     today = date.today()
     global dateBackup
     dateBackup = backupDate.date()
-    global backup
-    if today != dateBackup:
+    global backup0
+    global backup1
+    if today != dateBackup and dest == 'rsync':
         print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Dates do not match, backup has not run!')
-        backup = 'N'
+        backup0 = 'N'
 
-    elif today == dateBackup:
+    elif today == dateBackup and dest == 'rsync':
         print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Backup has been completed!')
-        backup = 'Y'
-
-def backupLocal():
-    jsonBackup = open('/home/xose/Scripts/backup/outputLocal.json')
-    data = json.load(jsonBackup)
-    format = "%Y-%m-%dT%H:%M:%S.%f"
-    last_modified = data['repository']['last_modified']
-    backupDate = datetime.strptime(last_modified, format)
-    today = date.today()
-    global dateBackup
-    dateBackup = backupDate.date()
-    global backupLocal
-    if today != dateBackup:
+        backup0 = 'Y'
+    
+    elif today != dateBackup and dest == 'local':
         print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Dates do not match, backup has not run!')
-        backupLocal = 'N'
+        backup1 = 'N'
 
-    elif today == dateBackup:
+    elif today == dateBackup and dest == 'local':
         print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Backup has been completed!')
-        backupLocal = 'Y'
+        backup1 = 'Y'
+
+backupRsync('rsync')
+backupRsync('local')
 
 # This consumes the json file from a url and prints the output
 
@@ -129,8 +136,9 @@ def checkDisks():
 
 def generateJSON():
     apachedir = '/srv/http/'
-    output = [{'backup0':{'backup': backup, 'date': str(dateBackup), 'device':'rsync'},
-    'backup': {'backup1': backupLocal, 'date': str(dateBackup), 'device':'local'}},
+    output = [
+    {'backup0':{'backup': backup0, 'date': str(dateBackup), 'destination':destination0},
+    'backup1': {'backup': backup1, 'date': str(dateBackup), 'destination':destination1}},
     {'disk0':{'device': disk0, 'status': status0}, 
     'disk1':{'device': disk1, 'status': status1},
     'disk2':{'device': disk2, 'status': status2},
@@ -141,9 +149,9 @@ def generateJSON():
         json.dump(output, outfile, indent=4)
 
 
-backupRsync()
+#backupRsync()
 
-backupLocal()
+#backupLocal()
 
 checkDisks()
 
