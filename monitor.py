@@ -13,22 +13,19 @@ path = __location__ = os.path.realpath(
 
 #os.environ['BORG_REPO'] = 'Here goes the env variable'
 
-
-
-def backupRsync(dest):
-    global destination0
-    global destination1
+def backup(dest):
+    global dest0
+    global dest1
     global jsonBackup
     if dest == 'rsync':
         jsonBackup = open('/home/xose/Scripts/backup/output'+dest+'.json')
-        destination0 = dest
+        dest0 = dest
     elif dest == 'local':
         jsonBackup = open('/home/xose/Scripts/backup/output'+dest+'.json')
-        destination1 = dest
+        dest1 = dest
     else:
         pass
     data = json.load(jsonBackup)
-    #print(data)
     format = "%Y-%m-%dT%H:%M:%S.%f"
     last_modified = data['repository']['last_modified']
     backupDate = datetime.strptime(last_modified, format)
@@ -61,8 +58,8 @@ def backupRsync(dest):
         print('Backup has been completed!')
         backup1 = 'Y'
 
-backupRsync('rsync')
-backupRsync('local')
+backup('rsync')
+backup('local')
 
 # This consumes the json file from a url and prints the output
 
@@ -137,8 +134,8 @@ def checkDisks():
 def generateJSON():
     apachedir = '/srv/http/'
     output = [
-    {'backup0':{'backup': backup0, 'date': str(dateBackup), 'destination':destination0},
-    'backup1': {'backup': backup1, 'date': str(dateBackup), 'destination':destination1}},
+    {'backup0':{'backup': backup0, 'date': str(dateBackup), 'destination':dest0},
+    'backup1': {'backup': backup1, 'date': str(dateBackup), 'destination':dest1}},
     {'disk0':{'device': disk0, 'status': status0}, 
     'disk1':{'device': disk1, 'status': status1},
     'disk2':{'device': disk2, 'status': status2},
