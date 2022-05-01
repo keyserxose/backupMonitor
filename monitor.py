@@ -58,8 +58,6 @@ def backup(dest):
         print('Backup has been completed!')
         backup1 = 'Y'
 
-backup('rsync')
-backup('local')
 
 # This consumes the json file from a url and prints the output
 
@@ -146,9 +144,9 @@ def generateJSON():
         json.dump(output, outfile, indent=4)
 
 
-#backupRsync()
+backup('rsync')
 
-#backupLocal()
+backup('local')
 
 checkDisks()
 
