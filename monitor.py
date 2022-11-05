@@ -13,6 +13,15 @@ path = __location__ = os.path.realpath(
 
 #os.environ['BORG_REPO'] = 'Here goes the env variable'
 
+mirrorLog = '/home/xose/Scripts/backup/backup.log'
+
+def mirror():
+    global mirror
+    if os.path.exists(mirrorLog):
+        mirror = '<div style="color:red">&#9632;</div>'
+    else:
+        mirror = '<div style="color:green">&#9632;</div>'
+
 def backup(dest):
     global dest0
     global dest1
@@ -38,25 +47,25 @@ def backup(dest):
         print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Dates do not match, backup has not run!')
-        backup0 = 'N'
+        backup0 = '<div style="color:red">&#9632;</div>'
 
     elif today == dateBackup and dest == 'rsync':
         print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Backup has been completed!')
-        backup0 = 'Y'
+        backup0 = '<div style="color:green">&#9632;</div>'
     
     elif today != dateBackup and dest == 'local':
         print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Dates do not match, backup has not run!')
-        backup1 = 'N'
+        backup1 = '<div style="color:red">&#9632;</div>'
 
     elif today == dateBackup and dest == 'local':
         print('This is the current date: '+str(today))
         print('This is the date of the last backup: '+str(dateBackup))
         print('Backup has been completed!')
-        backup1 = 'Y'
+        backup1 = '<div style="color:green">&#9632;</div>'
 
 
 # This consumes the json file from a url and prints the output
@@ -95,36 +104,36 @@ def checkDisks():
         global status4
         if jsonOutput == 'completed without error' and disk == 'sda':
             disk0 = disk
-            status0 = 'Good'
+            status0 = '<div style="color:green">&#9632;</div>'
         elif jsonOutput == 'completed without error' and disk == 'sdb':
             disk1 = disk
-            status1 = 'Good'
+            status1 = '<div style="color:green">&#9632;</div>'
         elif jsonOutput == 'completed without error' and disk == 'sdc':
             disk2 = disk
-            status2 = 'Good'
+            status2 = '<div style="color:green">&#9632;</div>'
         elif jsonOutput == 'completed without error' and disk == 'sdd':
             disk3 = disk
-            status3 = 'Good'
+            status3 = '<div style="color:green">&#9632;</div>'
         elif jsonOutput == 'completed without error' and disk == 'sde':
             disk4 = disk
-            status4 = 'Good'
+            status4 = '<div style="color:green">&#9632;</div>'
         elif jsonOutput != 'completed without error' and disk == 'sda':
             disk0 = disk
-            status0 = 'Issue'
+            status0 = '<div style="color:red">&#9632;</div>'
         elif jsonOutput != 'completed without error' and disk == 'sdb':
             disk1 = disk
-            status1 = 'Issue'
+            status1 = '<div style="color:red">&#9632;</div>'
         elif jsonOutput != 'completed without error' and disk == 'sdc':
             disk2 = disk
-            status2 = 'Issue'
+            status2 = '<div style="color:red">&#9632;</div>'
         elif jsonOutput != 'completed without error' and disk == 'sdd':
             disk3 = disk
-            status3 = 'Issue'
+            status3 = '<div style="color:red">&#9632;</div>'
         elif jsonOutput != 'completed without error' and disk == 'sde':
             disk4 = disk
-            status4 = 'Issue'
+            status4 = '<div style="color:red">&#9632;</div>'
         else:
-            print('There is an issue!')
+            print('There is an issue with disk /dev/'+disk)
             pass
 
 
@@ -143,6 +152,7 @@ def generateJSON():
     with open(apachedir+'data.json', 'w') as outfile:
         json.dump(output, outfile, indent=4)
 
+mirror()
 
 backup('rsync')
 
@@ -152,3 +162,95 @@ checkDisks()
 
 generateJSON()
 
+
+############THIS IS A TEST##############
+
+#f = open('/srv/http/index.html', 'w')
+
+f = open('index.html', 'w')
+  
+# the html code which will go in the file GFG.html
+html = """<html>
+<head>
+<title>Title</title>
+<link rel= 'stylesheet' type='text/css' href='style.css'/>
+</head>
+<body>
+<h1>Computer Status</h1>
+
+<table>
+  <tr>
+    <th>Backup</th>
+    <th></th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>Rsync</td>
+    <td></td>
+    <td>"""+backup0+"""</td>
+  </tr>
+  <tr>
+    <td>Local</td>
+    <td></td>
+    <td>"""+backup1+"""</td>
+  </tr>
+  <tr>
+    <td>Mirror</td>
+    <td></td>
+    <td>"""+mirror+"""</td>
+  </tr>
+</table>
+  
+<p></p>
+
+
+<table>
+  <tr>
+    <th>Disk</th>
+    <th></th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>"""+disk0+"""</td>
+    <td></td>
+    <td>"""+status0+"""</td>
+  </tr>
+  <tr>
+    <td>"""+disk1+"""</td>
+    <td></td>
+    <td>"""+status1+"""</td>
+  </tr>
+  <tr>
+    <td>"""+disk2+"""</td>
+    <td></td>
+    <td>"""+status2+"""</td>
+  </tr>
+  <tr>
+    <td>"""+disk3+"""</td>
+    <td></td>
+    <td>"""+status3+"""</td>
+  </tr>
+  <tr>
+    <td>"""+disk4+"""</td>
+    <td></td>
+    <td>"""+status4+"""</td>
+  </tr>
+</table>
+
+</body>
+</html>
+"""
+
+ 
+# writing the code into the file
+f.write(html)
+  
+# close the file
+f.close()
+
+def copyToApache():
+    #os.system('cp style.css paper/')
+    #os.system('chmod -R 777 paper')
+    os.system('cp -p -R index.html /srv/http/')
+
+copyToApache()
