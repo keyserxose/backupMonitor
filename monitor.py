@@ -203,7 +203,6 @@ html = """<html>
   
 <p></p>
 
-
 <table>
   <tr>
     <th>Disk</th>
