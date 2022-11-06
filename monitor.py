@@ -302,37 +302,37 @@ html = """<html>
   <tr>
     <th>Available</th>
     <th></th>
-    <th>Partition</th>
+    <th id='table'>Partition</th>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail0)+"""</td>
     <td></td>
-    <td>"""+target0+"""</td>
+    <td id='table'>"""+target0+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail1)+"""</td>
     <td></td>
-    <td>"""+target1+"""</td>
+    <td id='table'>"""+target1+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail2)+"""</td>
     <td></td>
-    <td>"""+target2+"""</td>
+    <td id='table'>"""+target2+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail3)+"""</td>
     <td></td>
-    <td>"""+target3+"""</td>
+    <td id='table'>"""+target3+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail4)+"""</td>
     <td></td>
-    <td>"""+target4+"""</td>
+    <td id='table'>"""+target4+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail5)+"""</td>
     <td></td>
-    <td>"""+target5+"""</td>
+    <td id='table'>"""+target5+"""</td>
   </tr>
 </table>
 

@@ -12,6 +12,15 @@ h1{
 table{
 
     font-weight: bold;
-    font-size: 30px;
-    margin-left: 1100;
+    font-size: 40px;
+    margin-left: 20px;
+    /*margin-left: 1100;*/
+}
+
+#table{
+
+    position: fixed;
+    margin-left: 70px;
+    
+
 }
