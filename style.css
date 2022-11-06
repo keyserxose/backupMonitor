@@ -17,10 +17,15 @@ table{
     /*margin-left: 1100;*/
 }
 
-#table{
+#tableDisks{
 
     position: fixed;
     margin-left: 70px;
     
 
+}
+
+th{
+
+    font-weight: bold;
 }

@@ -78,7 +78,7 @@ def backup(dest):
 #print(json_data['Backup'])
 
 def checkSpaceDisk():
-    disks = {'sda2','sdb6','sdb7','sdc1','sdd1','sde1'}
+    disks = {'sdb6','sdb7','sda2','sdc1','sdd1','sde1'}
     for disk in disks:
         print('Checking disk /dev/'+disk)
         #output = os.system('df -h | grep /dev/'+disk)
@@ -102,15 +102,15 @@ def checkSpaceDisk():
         global avail5
         global target5
 
-        if disk == 'sda2':
+        if disk == 'sdb6':
             part0 = disk
             avail0 = avail
             target0 = target
-        elif disk == 'sdb6':
+        elif disk == 'sdb7':
             part1 = disk
             avail1 = avail
             target1 = target
-        elif disk == 'sdb7':
+        elif disk == 'sda2':
             part2 = disk
             avail2 = avail
             target2 = target
@@ -302,37 +302,37 @@ html = """<html>
   <tr>
     <th>Available</th>
     <th></th>
-    <th id='table'>Partition</th>
+    <th id='tableDisks'>Partition</th>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail0)+"""</td>
     <td></td>
-    <td id='table'>"""+target0+"""</td>
+    <td id='tableDisks'>"""+target0+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail1)+"""</td>
     <td></td>
-    <td id='table'>"""+target1+"""</td>
+    <td id='tableDisks'>"""+target1+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail2)+"""</td>
     <td></td>
-    <td id='table'>"""+target2+"""</td>
+    <td id='tableDisks'>"""+target2+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail3)+"""</td>
     <td></td>
-    <td id='table'>"""+target3+"""</td>
+    <td id='tableDisks'>"""+target3+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail4)+"""</td>
     <td></td>
-    <td id='table'>"""+target4+"""</td>
+    <td id='tableDisks'>"""+target4+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail5)+"""</td>
     <td></td>
-    <td id='table'>"""+target5+"""</td>
+    <td id='tableDisks'>"""+target5+"""</td>
   </tr>
 </table>
 
