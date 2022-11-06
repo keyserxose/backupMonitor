@@ -77,6 +77,62 @@ def backup(dest):
 
 #print(json_data['Backup'])
 
+def checkSpaceDisk():
+    disks = {'sda2','sdb6','sdb7','sdc1','sdd1','sde1'}
+    for disk in disks:
+        print('Checking disk /dev/'+disk)
+        #output = os.system('df -h | grep /dev/'+disk)
+        avail = os.popen('df -h --output=avail /dev/'+disk+' | tail -1').read()
+        target = os.popen('df -h --output=target /dev/'+disk+' | tail -1').read()
+        #avail = os.system('df -h --output=avail /dev/'+disk+' | tail -1')
+        print(avail)
+        #target = os.system('df -h --output=target /dev/'+disk+' > /dev/null')
+        #df -h --output=source,avail,target | grep /dev/sda
+
+        global avail0
+        global target0
+        global avail1
+        global target1
+        global avail2
+        global target2
+        global avail3
+        global target3
+        global avail4
+        global target4
+        global avail5
+        global target5
+
+        if disk == 'sda2':
+            part0 = disk
+            avail0 = avail
+            target0 = target
+        elif disk == 'sdb6':
+            part1 = disk
+            avail1 = avail
+            target1 = target
+        elif disk == 'sdb7':
+            part2 = disk
+            avail2 = avail
+            target2 = target
+        elif disk == 'sdc1':
+            part3 = disk
+            avail3 = avail
+            target3 = target
+        elif disk == 'sdd1':
+            part4 = disk
+            avail4 = avail
+            target4 = target
+        elif disk == 'sde1':
+            part5 = disk
+            avail5 = avail
+            target5 = target
+        else:
+            pass
+
+
+
+checkSpaceDisk()
+
 # Test SMART Data
 
 def checkDisks():
@@ -94,6 +150,7 @@ def checkDisks():
             
         global disk0
         global status0
+        global avail0
         global disk1
         global status1
         global disk2
@@ -233,6 +290,46 @@ html = """<html>
     <td>"""+disk4+"""</td>
     <td></td>
     <td>"""+status4+"""</td>
+  </tr>
+</table>
+
+<p></p>
+
+<table>
+  <tr>
+    <th>Available</th>
+    <th></th>
+    <th>Partition</th>
+  </tr>
+  <tr>
+    <td>&nbsp;"""+str(avail0)+"""</td>
+    <td></td>
+    <td>"""+target0+"""</td>
+  </tr>
+  <tr>
+    <td>&nbsp;"""+str(avail1)+"""</td>
+    <td></td>
+    <td>"""+target1+"""</td>
+  </tr>
+  <tr>
+    <td>&nbsp;"""+str(avail2)+"""</td>
+    <td></td>
+    <td>"""+target2+"""</td>
+  </tr>
+  <tr>
+    <td>&nbsp;"""+str(avail3)+"""</td>
+    <td></td>
+    <td>"""+target3+"""</td>
+  </tr>
+  <tr>
+    <td>&nbsp;"""+str(avail4)+"""</td>
+    <td></td>
+    <td>"""+target4+"""</td>
+  </tr>
+  <tr>
+    <td>&nbsp;"""+str(avail5)+"""</td>
+    <td></td>
+    <td>"""+target5+"""</td>
   </tr>
 </table>
 
