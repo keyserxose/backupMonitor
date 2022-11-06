@@ -229,11 +229,14 @@ f = open('index.html', 'w')
 # the html code which will go in the file GFG.html
 html = """<html>
 <head>
-<title>Title</title>
+<title>System Monitor</title>
 <link rel= 'stylesheet' type='text/css' href='style.css'/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
 </head>
 <body>
-<h1>Computer Status</h1>
+<h1>System Monitor</h1>
 
 <table>
   <tr>
@@ -347,6 +350,6 @@ f.close()
 def copyToApache():
     #os.system('cp style.css paper/')
     #os.system('chmod -R 777 paper')
-    os.system('cp -p -R index.html /srv/http/')
+    os.system('cp -p -R index.html style.css /srv/http/')
 
 copyToApache()

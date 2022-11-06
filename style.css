@@ -1,4 +1,17 @@
 body{
 
-    color: #ffffff;
+    background-color: #ffffff;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+h1{
+    
+    margin-left: 1100;
+}
+
+table{
+
+    font-weight: bold;
+    font-size: 30px;
+    margin-left: 1100;
 }
