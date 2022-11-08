@@ -224,7 +224,9 @@ generateJSON()
 
 #f = open('/srv/http/index.html', 'w')
 
-f = open('index.html', 'w')
+sysReports = '/home/xose/sysReports/'
+
+f = open(sysReports+'index.html', 'w')
   
 # the html code which will go in the file GFG.html
 html = """<html>
@@ -350,6 +352,6 @@ f.close()
 def copyToApache():
     #os.system('cp style.css paper/')
     #os.system('chmod -R 777 paper')
-    os.system('cp -p -R index.html style.css /srv/http/')
+    os.system('cp -p -R '+sysReports+'index.html style.css /srv/http/')
 
 copyToApache()
