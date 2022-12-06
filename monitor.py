@@ -88,6 +88,7 @@ def checkSpaceDisk():
         print(avail)
         #target = os.system('df -h --output=target /dev/'+disk+' > /dev/null')
         #df -h --output=source,avail,target | grep /dev/sda
+        # Use an array in order to avoid defining so many variables
 
         global avail0
         global target0
@@ -352,6 +353,6 @@ f.close()
 def copyToApache():
     #os.system('cp style.css paper/')
     #os.system('chmod -R 777 paper')
-    os.system('cp -p -R '+sysReports+'index.html style.css /srv/http/')
+    os.system('cp -p -R '+sysReports+'index.html ' +sysReports+'style.css /srv/http/')
 
 copyToApache()
