@@ -17,10 +17,21 @@ mirrorLog = '/home/xose/Scripts/backup/backup.log'
 
 def mirror():
     global mirror
-    if os.path.exists(mirrorLog):
+    today = date.today()
+    today = today.strftime("%Y/%m/%d")
+    backupDate = os.popen('cat '+mirrorLog+' | head -c 10').read()
+    #backupDate = '2022/12/06'
+    error = os.popen('cat '+mirrorLog+' | grep error').read()
+    if today == backupDate and 'error' in error:
         mirror = '<div style="color:red">&#9632;</div>'
+        print('There is an error, backup has not run!')
+    elif today == backupDate:
+      mirror = '<div style="color:green">&#9632;</div>'
+      print('Backup has been completed!')
     else:
-        mirror = '<div style="color:green">&#9632;</div>'
+      mirror = '<div style="color:red">&#9632;</div>'
+      print('There is an error, backup has not run!')
+        
 
 def backup(dest):
     global dest0
