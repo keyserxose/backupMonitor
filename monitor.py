@@ -242,15 +242,11 @@ checkDisks()
 generateJSON()
 
 
-############THIS IS A TEST##############
-
-#f = open('/srv/http/index.html', 'w')
-
 sysReports = '/home/xose/sysReports/'
 
 f = open(sysReports+'index.html', 'w')
-  
-# the html code which will go in the file GFG.html
+
+
 html = """<html>
 <head>
 <title>System Monitor</title>
