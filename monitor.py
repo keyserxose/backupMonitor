@@ -299,7 +299,7 @@ html = """<html>
     <td id='tableDisks'>"""+usage+"""G</td>
   </tr>
   <tr>
-    <td>Usage</td>
+    <td>Hard Quota</td>
     <td></td>
     <td id='tableDisks'>"""+hardquota+"""G</td>
   </tr>
