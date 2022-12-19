@@ -79,6 +79,16 @@ def backup(dest):
         backup1 = '<div style="color:green">&#9632;</div>'
 
 
+def quota():
+  jsonQuota = open('/home/xose/Scripts/backup/quota.json')
+  data = json.load(jsonQuota)
+  global usage
+  usage = data['quota'][0]['usage']
+  global hardquota
+  hardquota = data['quota'][0]['hardquota']
+
+quota()
+
 # This consumes the json file from a url and prints the output
 
 #url = 'http://localhost:8080/data.json'
@@ -275,6 +285,26 @@ html = """<html>
   </tr>
 </table>
   
+<p></p>
+
+<table>
+  <tr>
+    <th>Quota</th>
+    <th></th>
+    <th id='tableDisks'>Status</th>
+  </tr>
+  <tr>
+    <td>Usage</td>
+    <td></td>
+    <td id='tableDisks'>"""+usage+"""G</td>
+  </tr>
+  <tr>
+    <td>Usage</td>
+    <td></td>
+    <td id='tableDisks'>"""+hardquota+"""G</td>
+  </tr>
+</table>
+
 <p></p>
 
 <table>
