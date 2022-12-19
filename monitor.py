@@ -86,6 +86,11 @@ def quota():
   usage = data['quota'][0]['usage']
   global hardquota
   hardquota = data['quota'][0]['hardquota']
+  result = float(hardquota) - float(usage)
+  global resultF
+  resultF = "{:.0f}".format(result)
+  #print ("{:.0f}".format(result))
+  #print("%.2f" % result)
 
 quota()
 
@@ -280,26 +285,6 @@ html = """<html>
     <td>"""+mirror+"""</td>
   </tr>
 </table>
-  
-<p></p>
-
-<table>
-  <tr>
-    <th>Quota</th>
-    <th></th>
-    <th id='tableDisks'>Status</th>
-  </tr>
-  <tr>
-    <td>Usage</td>
-    <td></td>
-    <td id='tableDisks'>"""+usage+"""G</td>
-  </tr>
-  <tr>
-    <td>Quota</td>
-    <td></td>
-    <td id='tableDisks'>"""+hardquota+"""G</td>
-  </tr>
-</table>
 
 <p></p>
 
@@ -373,6 +358,11 @@ html = """<html>
     <td>&nbsp;"""+str(avail5)+"""</td>
     <td></td>
     <td id='tableDisks'>"""+target5+"""</td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;"""+resultF+"""G</td>
+    <td></td>
+    <td id='tableDisks'>rsync.net</td>
   </tr>
 </table>
 
