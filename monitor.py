@@ -11,8 +11,6 @@ from datetime import datetime
 path = __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-#os.environ['BORG_REPO'] = 'Here goes the env variable'
-
 mirrorLog = '/home/xose/Scripts/backup/backup.log'
 
 def mirror():
@@ -20,7 +18,6 @@ def mirror():
     today = date.today()
     today = today.strftime("%Y/%m/%d")
     backupDate = os.popen('cat '+mirrorLog+' | head -c 10').read()
-    #backupDate = '2022/12/06'
     error = os.popen('cat '+mirrorLog+' | grep error').read()
     if today == backupDate and 'error' in error:
         mirror = '<div style="color:red">&#9632;</div>'
@@ -89,32 +86,16 @@ def quota():
   result = float(hardquota) - float(usage)
   global resultF
   resultF = "{:.0f}".format(result)
-  #print ("{:.0f}".format(result))
-  #print("%.2f" % result)
 
 quota()
-
-# This consumes the json file from a url and prints the output
-
-#url = 'http://localhost:8080/data.json'
-#
-#new_request = requests.get(url)
-#json_data = new_request.json()
-
-#print(json_data['Backup'])
 
 def checkSpaceDisk():
     disks = {'sdd6','sdd7','sda1','sdb1','sdc1','sde1'}
     for disk in disks:
         print('Checking disk /dev/'+disk)
-        #output = os.system('df -h | grep /dev/'+disk)
         avail = os.popen('df -h --output=avail /dev/'+disk+' | tail -1').read()
         target = os.popen('df -h --output=target /dev/'+disk+' | tail -1').read()
-        #avail = os.system('df -h --output=avail /dev/'+disk+' | tail -1')
         print(avail)
-        #target = os.system('df -h --output=target /dev/'+disk+' > /dev/null')
-        #df -h --output=source,avail,target | grep /dev/sda
-        # Use an array in order to avoid defining so many variables
 
         global avail0
         global target0
@@ -374,8 +355,6 @@ f.write(html)
 f.close()
 
 def copyToApache():
-    #os.system('cp style.css paper/')
-    #os.system('chmod -R 777 paper')
     os.system('cp -p -R '+sysReports+'index.html ' +sysReports+'style.css /srv/http/')
 
 copyToApache()
