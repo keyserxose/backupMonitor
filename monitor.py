@@ -104,7 +104,7 @@ quota()
 #print(json_data['Backup'])
 
 def checkSpaceDisk():
-    disks = {'sda6','sda7','sdb1','sdc1','sdd1'}
+    disks = {'sdd6','sdd7','sda1','sdb1','sdc1','sde1'}
     for disk in disks:
         print('Checking disk /dev/'+disk)
         #output = os.system('df -h | grep /dev/'+disk)
@@ -129,26 +129,30 @@ def checkSpaceDisk():
         global avail5
         global target5
 
-        if disk == 'sda6':
+        if disk == 'sdd6':
             part0 = disk
             avail0 = avail
             target0 = target
-        elif disk == 'sda7':
+        elif disk == 'sdd7':
             part1 = disk
             avail1 = avail
             target1 = target
-        elif disk == 'sdb1':
+        elif disk == 'sda1':
             part2 = disk
             avail2 = avail
             target2 = target
-        elif disk == 'sdc1':
+        elif disk == 'sdb1':
             part3 = disk
             avail3 = avail
             target3 = target
-        elif disk == 'sdd1':
+        elif disk == 'sdc1':
             part4 = disk
             avail4 = avail
             target4 = target
+        elif disk == 'sde1':
+            part5 = disk
+            avail5 = avail
+            target5 = target
         else:
             pass
 
@@ -159,7 +163,7 @@ checkSpaceDisk()
 # Test SMART Data
 
 def checkDisks():
-    disks = {'sda','sdb','sdc','sdd'}
+    disks = {'sda','sdb','sdc','sdd','sde'}
 
     for disk in disks:
         print('Checking disk /dev/'+disk)
@@ -194,6 +198,9 @@ def checkDisks():
         elif jsonOutput == 'completed without error' and disk == 'sdd':
             disk3 = disk
             status3 = '<div style="color:green">&#9632;</div>'
+        elif jsonOutput == 'completed without error' and disk == 'sde':
+            disk4 = disk
+            status4 = '<div style="color:green">&#9632;</div>'
         elif jsonOutput != 'completed without error' and disk == 'sda':
             disk0 = disk
             status0 = '<div style="color:red">&#9632;</div>'
@@ -206,6 +213,9 @@ def checkDisks():
         elif jsonOutput != 'completed without error' and disk == 'sdd':
             disk3 = disk
             status3 = '<div style="color:red">&#9632;</div>'
+        elif jsonOutput != 'completed without error' and disk == 'sde':
+            disk4 = disk
+            status4 = '<div style="color:red">&#9632;</div>'
         else:
             print('There is an issue with disk /dev/'+disk)
             pass
@@ -220,7 +230,8 @@ def generateJSON():
     {'disk0':{'device': disk0, 'status': status0}, 
     'disk1':{'device': disk1, 'status': status1},
     'disk2':{'device': disk2, 'status': status2},
-    'disk3':{'device': disk3, 'status': status3}},
+    'disk3':{'device': disk3, 'status': status3},
+    'disk4':{'device': disk4, 'status': status4}},
     ]
     with open(apachedir+'data.json', 'w') as outfile:
         json.dump(output, outfile, indent=4)
@@ -303,6 +314,11 @@ html = """<html>
     <td>"""+disk3+"""</td>
     <td></td>
     <td>"""+status3+"""</td>
+  </tr>
+  <tr>
+    <td>"""+disk4+"""</td>
+    <td></td>
+    <td>"""+status4+"""</td>
   </tr>
 </table>
 
