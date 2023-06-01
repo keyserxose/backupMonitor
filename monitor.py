@@ -11,16 +11,24 @@ from datetime import datetime
 path = __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-#os.environ['BORG_REPO'] = 'Here goes the env variable'
-
 mirrorLog = '/home/xose/Scripts/backup/backup.log'
 
 def mirror():
     global mirror
-    if os.path.exists(mirrorLog):
+    today = date.today()
+    today = today.strftime("%Y/%m/%d")
+    backupDate = os.popen('cat '+mirrorLog+' | head -c 10').read()
+    error = os.popen('cat '+mirrorLog+' | grep error').read()
+    if today == backupDate and 'error' in error:
         mirror = '<div style="color:red">&#9632;</div>'
+        print('There is an error, backup has not run!')
+    elif today == backupDate:
+      mirror = '<div style="color:green">&#9632;</div>'
+      print('Backup has been completed!')
     else:
-        mirror = '<div style="color:green">&#9632;</div>'
+      mirror = '<div style="color:red">&#9632;</div>'
+      print('There is an error, backup has not run!')
+        
 
 def backup(dest):
     global dest0
@@ -68,26 +76,26 @@ def backup(dest):
         backup1 = '<div style="color:green">&#9632;</div>'
 
 
-# This consumes the json file from a url and prints the output
+def quota():
+  jsonQuota = open('/home/xose/Scripts/backup/quota.json')
+  data = json.load(jsonQuota)
+  global usage
+  usage = data['quota'][0]['usage']
+  global hardquota
+  hardquota = data['quota'][0]['hardquota']
+  result = float(hardquota) - float(usage)
+  global resultF
+  resultF = "{:.0f}".format(result)
 
-#url = 'http://localhost:8080/data.json'
-#
-#new_request = requests.get(url)
-#json_data = new_request.json()
-
-#print(json_data['Backup'])
+quota()
 
 def checkSpaceDisk():
-    disks = {'sda2','sdb6','sdb7','sdc1','sdd1','sde1'}
+    disks = {'sdd6','sdd7','sda1','sdb1','sdc1','sde1'}
     for disk in disks:
         print('Checking disk /dev/'+disk)
-        #output = os.system('df -h | grep /dev/'+disk)
         avail = os.popen('df -h --output=avail /dev/'+disk+' | tail -1').read()
         target = os.popen('df -h --output=target /dev/'+disk+' | tail -1').read()
-        #avail = os.system('df -h --output=avail /dev/'+disk+' | tail -1')
         print(avail)
-        #target = os.system('df -h --output=target /dev/'+disk+' > /dev/null')
-        #df -h --output=source,avail,target | grep /dev/sda
 
         global avail0
         global target0
@@ -102,23 +110,23 @@ def checkSpaceDisk():
         global avail5
         global target5
 
-        if disk == 'sda2':
+        if disk == 'sdd6':
             part0 = disk
             avail0 = avail
             target0 = target
-        elif disk == 'sdb6':
+        elif disk == 'sdd7':
             part1 = disk
             avail1 = avail
             target1 = target
-        elif disk == 'sdb7':
+        elif disk == 'sda1':
             part2 = disk
             avail2 = avail
             target2 = target
-        elif disk == 'sdc1':
+        elif disk == 'sdb1':
             part3 = disk
             avail3 = avail
             target3 = target
-        elif disk == 'sdd1':
+        elif disk == 'sdc1':
             part4 = disk
             avail4 = avail
             target4 = target
@@ -220,20 +228,22 @@ checkDisks()
 generateJSON()
 
 
-############THIS IS A TEST##############
+sysReports = '/home/xose/sysReports/'
 
-#f = open('/srv/http/index.html', 'w')
+f = open(sysReports+'index.html', 'w')
 
-f = open('index.html', 'w')
-  
-# the html code which will go in the file GFG.html
+
 html = """<html>
 <head>
-<title>Title</title>
+<title>System Monitor</title>
 <link rel= 'stylesheet' type='text/css' href='style.css'/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
+<meta http-equiv="refresh" content="300" >
 </head>
 <body>
-<h1>Computer Status</h1>
+<h1>System Monitor</h1>
 
 <table>
   <tr>
@@ -257,7 +267,7 @@ html = """<html>
     <td>"""+mirror+"""</td>
   </tr>
 </table>
-  
+
 <p></p>
 
 <table>
@@ -299,37 +309,37 @@ html = """<html>
   <tr>
     <th>Available</th>
     <th></th>
-    <th>Partition</th>
+    <th id='tableDisks'>Partition</th>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail0)+"""</td>
     <td></td>
-    <td>"""+target0+"""</td>
+    <td id='tableDisks'>"""+target0+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail1)+"""</td>
     <td></td>
-    <td>"""+target1+"""</td>
+    <td id='tableDisks'>"""+target1+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail2)+"""</td>
     <td></td>
-    <td>"""+target2+"""</td>
+    <td id='tableDisks'>"""+target2+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail3)+"""</td>
     <td></td>
-    <td>"""+target3+"""</td>
+    <td id='tableDisks'>"""+target3+"""</td>
   </tr>
   <tr>
     <td>&nbsp;"""+str(avail4)+"""</td>
     <td></td>
-    <td>"""+target4+"""</td>
+    <td id='tableDisks'>"""+target4+"""</td>
   </tr>
   <tr>
-    <td>&nbsp;"""+str(avail5)+"""</td>
+    <td>&nbsp;&nbsp;"""+resultF+"""G</td>
     <td></td>
-    <td>"""+target5+"""</td>
+    <td id='tableDisks'>rsync.net</td>
   </tr>
 </table>
 
@@ -345,8 +355,6 @@ f.write(html)
 f.close()
 
 def copyToApache():
-    #os.system('cp style.css paper/')
-    #os.system('chmod -R 777 paper')
-    os.system('cp -p -R index.html /srv/http/')
+    os.system('cp -p -R '+sysReports+'index.html ' +sysReports+'style.css /srv/http/')
 
 copyToApache()
