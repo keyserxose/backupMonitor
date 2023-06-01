@@ -230,8 +230,49 @@ generateJSON()
 
 sysReports = '/home/xose/sysReports/'
 
-f = open(sysReports+'index.html', 'w')
+s = open(sysReports+'style.css', 'w')
 
+css = """body{
+
+    background-color: #ffffff;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+h1{
+    
+    margin-left: 1100;
+}
+
+table{
+
+    font-weight: bold;
+    font-size: 40px;
+    margin-left: 20px;
+    /*margin-left: 1100;*/
+}
+
+#tableDisks{
+
+    position: fixed;
+    margin-left: 70px;
+    
+
+}
+
+th{
+
+    font-weight: bold;
+}"""
+
+
+# writing the code into the file
+s.write(css)
+  
+# close the file
+s.close()
+
+
+f = open(sysReports+'index.html', 'w')
 
 html = """<html>
 <head>
