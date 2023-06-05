@@ -6,6 +6,7 @@ import json
 import requests
 from datetime import date
 from datetime import datetime
+from datetime import timedelta
 
 # Reading from the current path
 path = __location__ = os.path.realpath(
@@ -202,17 +203,62 @@ def checkDisks():
             pass
 
 
+def checkDisksAge():
+    #disks = {'sdb'}
+    disks = {'sda','sdb','sdc','sdd','sde'}
+    for disk in disks:
+        print('Checking disk /dev/'+disk)
+        os.system('smartctl --all /dev/'+disk+' -j > /home/xose/sysReports/smartdata.json')
+        report = open('/home/xose/sysReports/smartdata.json')
+        jsonData = json.load(report)
+        try:
+          powerOn = jsonData['power_on_time']['hours']
+        except KeyError:
+          pass
+        d = timedelta(hours=powerOn)
+        numMonths = int(d.days/31)
+        if (numMonths) > 12:
+          print('Powered On: 1 year, '+str(numMonths - 12)+' months')
+          age = '1 year, '+str(numMonths - 12)+' months'
+        elif (numMonths) < 12:
+          print('Powered On: '+str(numMonths)+' months')
+          age = str(numMonths)+' months'
+
+        global age0
+        global age1
+        global age2
+        global age3
+        global age4
+        if disk == 'sda':
+            disk0 = disk
+            age0 = age
+        elif disk == 'sdb':
+            disk1 = disk
+            age1 = age
+        elif disk == 'sdc':
+            disk2 = disk
+            age2 = age
+        elif disk == 'sdd':
+            disk3 = disk
+            age3 = age
+        elif disk == 'sde':
+            disk4 = disk
+            age4 = age
+        
+
+
+checkDisksAge()
 
 def generateJSON():
     apachedir = '/srv/http/'
     output = [
     {'backup0':{'backup': backup0, 'date': str(dateBackup), 'destination':dest0},
     'backup1': {'backup': backup1, 'date': str(dateBackup), 'destination':dest1}},
-    {'disk0':{'device': disk0, 'status': status0}, 
-    'disk1':{'device': disk1, 'status': status1},
-    'disk2':{'device': disk2, 'status': status2},
-    'disk3':{'device': disk3, 'status': status3},
-    'disk4':{'device': disk4, 'status': status4}},
+    {'disk0':{'device': disk0, 'status': status0, 'age': age0}, 
+    'disk1':{'device': disk1, 'status': status1, 'age': age1},
+    'disk2':{'device': disk2, 'status': status2, 'age': age2},
+    'disk3':{'device': disk3, 'status': status3, 'age': age3},
+    'disk4':{'device': disk4, 'status': status4, 'age': age4}},
     ]
     with open(apachedir+'data.json', 'w') as outfile:
         json.dump(output, outfile, indent=4)
@@ -316,31 +362,37 @@ html = """<html>
     <th>Disk</th>
     <th></th>
     <th>Status</th>
+    <th>Age</th>
   </tr>
   <tr>
     <td>"""+disk0+"""</td>
     <td></td>
     <td>"""+status0+"""</td>
+    <td>"""+age0+"""</td>
   </tr>
   <tr>
     <td>"""+disk1+"""</td>
     <td></td>
     <td>"""+status1+"""</td>
+    <td>"""+age1+"""</td>
   </tr>
   <tr>
     <td>"""+disk2+"""</td>
     <td></td>
     <td>"""+status2+"""</td>
+    <td>"""+age2+"""</td>
   </tr>
   <tr>
     <td>"""+disk3+"""</td>
     <td></td>
     <td>"""+status3+"""</td>
+    <td>"""+age3+"""</td>
   </tr>
   <tr>
     <td>"""+disk4+"""</td>
     <td></td>
     <td>"""+status4+"""</td>
+    <td>"""+age4+"""</td>
   </tr>
 </table>
 
