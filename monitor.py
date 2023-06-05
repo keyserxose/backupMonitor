@@ -14,9 +14,9 @@ path = __location__ = os.path.realpath(
 
 mirrorLog = '/home/xose/Scripts/backup/backup.log'
 global partitions
-partitions = {'sdd6','sdd7','sda1','sdb1','sdc1','sde1'}
+partitions = {'sdc6','sdc7','sda1','sdb1','sdd1'}
 global disks
-disks = {'sda','sdb','sdc','sdd','sde'}
+disks = {'sda','sdb','sdc','sdd'}
 
 def mirror():
     global mirror
@@ -95,7 +95,6 @@ def quota():
 quota()
 
 def checkSpaceDisk():
-    #disks = {'sdd6','sdd7','sda1','sdb1','sdc1','sde1'}
     for disk in partitions:
         print('Checking disk /dev/'+disk)
         avail = os.popen('df -h --output=avail /dev/'+disk+' | tail -1').read()
@@ -115,11 +114,11 @@ def checkSpaceDisk():
         global avail5
         global target5
 
-        if disk == 'sdd6':
+        if disk == 'sdc6':
             part0 = disk
             avail0 = avail
             target0 = target
-        elif disk == 'sdd7':
+        elif disk == 'sdc7':
             part1 = disk
             avail1 = avail
             target1 = target
@@ -131,14 +130,10 @@ def checkSpaceDisk():
             part3 = disk
             avail3 = avail
             target3 = target
-        elif disk == 'sdc1':
+        elif disk == 'sdd1':
             part4 = disk
             avail4 = avail
             target4 = target
-        elif disk == 'sde1':
-            part5 = disk
-            avail5 = avail
-            target5 = target
         else:
             pass
 
@@ -149,8 +144,6 @@ checkSpaceDisk()
 # Test SMART Data
 
 def checkDisks():
-    #disks = {'sda','sdb','sdc','sdd','sde'}
-
     for disk in disks:
         print('Checking disk /dev/'+disk)
         os.system('smartctl --all /dev/'+disk+' -j > /home/xose/sysReports/smartdata.json')
@@ -170,8 +163,6 @@ def checkDisks():
         global status2
         global disk3
         global status3
-        global disk4
-        global status4
         if jsonOutput == 'completed without error' and disk == 'sda':
             disk0 = disk
             status0 = '<div style="color:green">&#9632;</div>'
@@ -184,9 +175,6 @@ def checkDisks():
         elif jsonOutput == 'completed without error' and disk == 'sdd':
             disk3 = disk
             status3 = '<div style="color:green">&#9632;</div>'
-        elif jsonOutput == 'completed without error' and disk == 'sde':
-            disk4 = disk
-            status4 = '<div style="color:green">&#9632;</div>'
         elif jsonOutput != 'completed without error' and disk == 'sda':
             disk0 = disk
             status0 = '<div style="color:red">&#9632;</div>'
@@ -199,9 +187,6 @@ def checkDisks():
         elif jsonOutput != 'completed without error' and disk == 'sdd':
             disk3 = disk
             status3 = '<div style="color:red">&#9632;</div>'
-        elif jsonOutput != 'completed without error' and disk == 'sde':
-            disk4 = disk
-            status4 = '<div style="color:red">&#9632;</div>'
         else:
             print('There is an issue with disk /dev/'+disk)
             pass
@@ -244,9 +229,6 @@ def checkDisksAge():
         elif disk == 'sdd':
             disk3 = disk
             age3 = age
-        elif disk == 'sde':
-            disk4 = disk
-            age4 = age
         
 
 
@@ -260,8 +242,7 @@ def generateJSON():
     {'disk0':{'device': disk0, 'status': status0, 'age': age0}, 
     'disk1':{'device': disk1, 'status': status1, 'age': age1},
     'disk2':{'device': disk2, 'status': status2, 'age': age2},
-    'disk3':{'device': disk3, 'status': status3, 'age': age3},
-    'disk4':{'device': disk4, 'status': status4, 'age': age4}},
+    'disk3':{'device': disk3, 'status': status3, 'age': age3}},
     ]
     with open(apachedir+'data.json', 'w') as outfile:
         json.dump(output, outfile, indent=4)
@@ -365,7 +346,7 @@ html = """<html>
     <th>Disk</th>
     <th></th>
     <th>Status</th>
-    <th>Age</th>
+    <th>Powered On</th>
   </tr>
   <tr>
     <td>"""+disk0+"""</td>
@@ -390,12 +371,6 @@ html = """<html>
     <td></td>
     <td>"""+status3+"""</td>
     <td>"""+age3+"""</td>
-  </tr>
-  <tr>
-    <td>"""+disk4+"""</td>
-    <td></td>
-    <td>"""+status4+"""</td>
-    <td>"""+age4+"""</td>
   </tr>
 </table>
 
@@ -426,11 +401,6 @@ html = """<html>
     <td>&nbsp;"""+str(avail3)+"""</td>
     <td></td>
     <td id='tableDisks'>"""+target3+"""</td>
-  </tr>
-  <tr>
-    <td>&nbsp;"""+str(avail4)+"""</td>
-    <td></td>
-    <td id='tableDisks'>"""+target4+"""</td>
   </tr>
   <tr>
     <td>&nbsp;&nbsp;"""+resultF+"""G</td>
