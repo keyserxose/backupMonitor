@@ -13,6 +13,10 @@ path = __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 mirrorLog = '/home/xose/Scripts/backup/backup.log'
+global partitions
+partitions = {'sdd6','sdd7','sda1','sdb1','sdc1','sde1'}
+global disks
+disks = {'sda','sdb','sdc','sdd','sde'}
 
 def mirror():
     global mirror
@@ -91,8 +95,8 @@ def quota():
 quota()
 
 def checkSpaceDisk():
-    disks = {'sdd6','sdd7','sda1','sdb1','sdc1','sde1'}
-    for disk in disks:
+    #disks = {'sdd6','sdd7','sda1','sdb1','sdc1','sde1'}
+    for disk in partitions:
         print('Checking disk /dev/'+disk)
         avail = os.popen('df -h --output=avail /dev/'+disk+' | tail -1').read()
         target = os.popen('df -h --output=target /dev/'+disk+' | tail -1').read()
@@ -145,7 +149,7 @@ checkSpaceDisk()
 # Test SMART Data
 
 def checkDisks():
-    disks = {'sda','sdb','sdc','sdd','sde'}
+    #disks = {'sda','sdb','sdc','sdd','sde'}
 
     for disk in disks:
         print('Checking disk /dev/'+disk)
@@ -204,8 +208,7 @@ def checkDisks():
 
 
 def checkDisksAge():
-    #disks = {'sdb'}
-    disks = {'sda','sdb','sdc','sdd','sde'}
+    #disks = {'sda','sdb','sdc','sdd','sde'}
     for disk in disks:
         print('Checking disk /dev/'+disk)
         os.system('smartctl --all /dev/'+disk+' -j > /home/xose/sysReports/smartdata.json')
