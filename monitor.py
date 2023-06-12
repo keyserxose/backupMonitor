@@ -204,13 +204,17 @@ def checkDisksAge():
         except KeyError:
           pass
         d = timedelta(hours=powerOn)
-        numMonths = int(d.days/31)
-        if (numMonths) > 12:
+        print(d)
+        numMonths = int(d.days/30)
+        if numMonths > 12 and numMonths < 24:
           print('Powered On: 1 year, '+str(numMonths - 12)+' months')
           age = '1 year, '+str(numMonths - 12)+' months'
         elif (numMonths) < 12:
           print('Powered On: '+str(numMonths)+' months')
           age = str(numMonths)+' months'
+        elif numMonths >= 24:
+          print('Powered On: 2 year, '+str(numMonths - 24)+' months')
+          age = '2 year, '+str(numMonths - 24)+' months'
 
         global age0
         global age1
@@ -264,8 +268,9 @@ s = open(sysReports+'style.css', 'w')
 
 css = """body{
 
-    background-color: #ffffff;
+    background-color: #f2f2f2;
     font-family: 'Source Sans Pro', sans-serif;
+    color: #222222
 }
 
 h1{
@@ -285,8 +290,6 @@ table{
 
     position: fixed;
     margin-left: 70px;
-    
-
 }
 
 th{
