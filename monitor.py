@@ -14,7 +14,7 @@ path = __location__ = os.path.realpath(
 
 mirrorLog = '/home/xose/Scripts/backup/backup.log'
 global partitions
-partitions = {'sdc6','sdc7','sda1','sdb1','sdd1'}
+partitions = {'sdb6','sdb7','sda1','sdc1','sdd1'}
 global disks
 disks = {'sda','sdb','sdc','sdd'}
 
@@ -114,11 +114,11 @@ def checkSpaceDisk():
         global avail5
         global target5
 
-        if disk == 'sdc6':
+        if disk == 'sdb6':
             part0 = disk
             avail0 = avail
             target0 = target
-        elif disk == 'sdc7':
+        elif disk == 'sdb7':
             part1 = disk
             avail1 = avail
             target1 = target
@@ -126,11 +126,11 @@ def checkSpaceDisk():
             part2 = disk
             avail2 = avail
             target2 = target
-        elif disk == 'sdb1':
+        elif disk == 'sdd1':
             part3 = disk
             avail3 = avail
             target3 = target
-        elif disk == 'sdd1':
+        elif disk == 'sdc1':
             part4 = disk
             avail4 = avail
             target4 = target
